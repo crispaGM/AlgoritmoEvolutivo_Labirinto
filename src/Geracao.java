@@ -1,5 +1,5 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Geracao {
     
@@ -7,10 +7,12 @@ public class Geracao {
 	private ArrayList melhores = new ArrayList();
 	private int pontoFinal [] = new int[2];
 	private int pontoInicial [] = new int[2];
+	Labirinto labirinto;
 
-	public Geracao(char[][] labirinto) {
-		pontos(labirinto);
-	
+
+	public Geracao(Labirinto labirinto) {
+		pontos(labirinto.getLabirintoaux());
+	    this.labirinto =labirinto;
 	}
 	
 	 
@@ -61,7 +63,7 @@ public class Geracao {
 		for(int i =0; i<populacao.size();i++) {
 			Robo aux = (Robo) populacao.get(i);
 			
-		    calcularFitness(aux.percorrer(pontoInicial));	
+		    
 		
 		   // calcularFitness de todos e salvar em "melhores" somente os 10 com maior fitness;
 		}
@@ -72,7 +74,19 @@ public class Geracao {
 	}
 	
 	
-	public void calcularFitness(int [] trajeto) {
+	public void percorrer() {
+		Iterator it = populacao.iterator();
+        Robo aux;
+
+		String posicao;
+		while(it.hasNext()) {
+		aux = (Robo) it.next();	
+		aux.percorrer();
+		labirinto.percorrer(aux);	
+		}
+	}
+	
+	public void calcularFitness() {
 		
 		
 		

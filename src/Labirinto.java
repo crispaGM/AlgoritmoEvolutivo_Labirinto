@@ -1,16 +1,23 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Labirinto {
    private int qtd = 0;
-   private  List<char[][]> labirintos = new ArrayList<char[][]>();
+  // private  List<char[][]> labirintos = new ArrayList<char[][]>();
    private char labirintoaux[][] = new char[10][15];
 	
 	
+	public char[][] getLabirintoaux() {
+	return labirintoaux;
+}
+
+
+
+
 	public Labirinto() {
 		
 	}
@@ -44,7 +51,7 @@ public class Labirinto {
 		    
 		      }
 		      
-		      if(contagem == 10) {
+//		      if(contagem == 10) {
 		    	
 //		    	  for(int i =0; i<10; i++) {
 //		    		 
@@ -61,10 +68,10 @@ public class Labirinto {
 //		    	  }
 //		    	  System.out.println(" ");
 		    	  
-		    	  char auxiliar [][] = labirintoaux;
-		    	  labirintos.add(auxiliar);
-		    	  contagem =0;
-		      }
+//		    	  char auxiliar [][] = labirintoaux;
+//		    	  labirintos.add(auxiliar);
+//		    	  contagem =0;
+//		      }
 		      
 		      
 	      
@@ -91,23 +98,44 @@ public int getQtd() {
 
 
 
+public void percorrer(Robo robo) {
+	
+ArrayList trajeto = robo.getTrajeto();
+Iterator it = trajeto.iterator();
+int aux [];
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-public List getLabirintos() {
-	return labirintos;
+String posicao;
+while(it.hasNext()) {
+	aux = (int[]) it.next();
+	
+	if(labirintoaux [aux[0]][aux[1]] == '#') {
+		robo.setParede();
+	}
+	
+	if(labirintoaux [aux[0]][aux[1]] == 'F') {
+		robo.acertou(true);
+	}
+	
 }
+
+
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	   
    }
 

@@ -12,7 +12,7 @@ public class Principal {
 		
 			
 		
-		nova = new Geracao((char[][]) labirinto.getLabirintos().get(0));
+		nova = new Geracao( labirinto);
 		nova.setPopulacao(populacaoInicial());
 		
 	}
@@ -27,14 +27,14 @@ public static ArrayList populacaoInicial() {
     
     for(int i = 0; i<100; i++) {
     	 
-    	 cromossomo = gerador.nextInt(100)+1;
+    	 cromossomo = gerador.nextInt(50)+1;
     	 char genes[] = new char[cromossomo];
     	 for(int j = 0; j<cromossomo;j++) {
     		 int aux = gerador.nextInt(4);
     		 genes[j]= passos[aux];
     	 }
     	 
-    	 Robo novo = new Robo(genes);
+    	 Robo novo = new Robo(genes,nova.getPontoInicial());
     	 inicial.add(novo);
     	 
     	 
