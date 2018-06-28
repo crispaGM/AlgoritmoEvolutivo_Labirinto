@@ -51,27 +51,27 @@ public class Labirinto {
 		    
 		      }
 		      
-//		      if(contagem == 10) {
+		      if(contagem == 10) {
 		    	
-//		    	  for(int i =0; i<10; i++) {
-//		    		 
-//		    		  for(int j =0; j<aux.length;j++) {
-//		                     
-//		  		        
-//		    			  System.out.print(labirintoaux[i][j]);
-//		  		    		  
-//		  			    	
-//		  			    
-//		  			      }
-//	    			  System.out.println(" ");
-//
-//		    	  }
-//		    	  System.out.println(" ");
+		    	  for(int i =0; i<10; i++) {
+		    		 
+		    		  for(int j =0; j<aux.length;j++) {
+		                     
+		  		        
+		    			  System.out.print(labirintoaux[i][j]);
+		  		    		  
+		  			    	
+		  			    
+		  			      }
+	    			  System.out.println(" ");
+
+		    	  }
+		    	  System.out.println(" ");
 		    	  
 //		    	  char auxiliar [][] = labirintoaux;
 //		    	  labirintos.add(auxiliar);
-//		    	  contagem =0;
-//		      }
+		    	  contagem =0;
+		      }
 		      
 		      
 	      
@@ -109,13 +109,22 @@ String posicao;
 while(it.hasNext()) {
 	aux = (int[]) it.next();
 	
-	if(labirintoaux [aux[0]][aux[1]] == '#') {
-		robo.setParede();
+	if(!(aux[0] < 0 || aux[0]>9 || aux[1] < 0 || aux[1] > 14)) {
+		
+		if(labirintoaux [aux[0]][aux[1]] == '#') {
+			robo.setParede();
+		}
+		
+		if(labirintoaux [aux[0]][aux[1]] == 'F') {
+			robo.acertou(true);
+		}
+		
 	}
 	
-	if(labirintoaux [aux[0]][aux[1]] == 'F') {
-		robo.acertou(true);
+	else {
+		robo.calcularFitness(0);
 	}
+	
 	
 }
 

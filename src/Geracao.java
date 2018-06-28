@@ -84,12 +84,109 @@ public class Geracao {
 		aux.percorrer();
 		labirinto.percorrer(aux);	
 		}
+		menorEnergia();
+		calcularFitness();
+		
+	}
+	
+	public void menorEnergia() {
+		ArrayList auxiliar= new ArrayList();
+		
+		Iterator it = populacao.iterator();
+        Robo aux;
+        Robo escolhido = null;
+        int maisenergia = 0;
+        int contador = 0;
+		for(int i =0; i< populacao.size();i++) {
+			
+			while(it.hasNext()) {
+	    		int menor = 99999;
+	        	aux = (Robo) it.next();	
+	    		
+	    		if(aux.getEnergia() < menor) {
+	    			escolhido = aux;
+	    			menor = aux.getEnergia();
+	    			
+	    		}
+			
+			
+		}
+			
+			if(i == 0) {
+				escolhido.setMenorGasto(true,0);
+			}
+			else if(i> 0 && i<10) {
+				escolhido.setMenorGasto(true,1);
+			}
+			
+			else if(i> 10 && i<30) {
+				escolhido.setMenorGasto(true,2);
+			}
+			
+			else if(i> 30 && i<60) {
+				escolhido.setMenorGasto(true,3);
+			}
+			
+			else if(i> 60 && i<99) {
+				escolhido.setMenorGasto(true,4);
+			}
+			
+		}
+        
+		
+		
 	}
 	
 	public void calcularFitness() {
 		
-		
+		Iterator it = populacao.iterator();
+        Robo aux;
+       
+        
+        
+        
+        while(it.hasNext()) {
+    		aux = (Robo) it.next();	
+    		
+    		int fitness = aux.avaliarTrajeto(pontoFinal)+ aux.punicao() + aux.getGasto();
+		    aux.calcularFitness(fitness);
 		
 	}
 	
+
+ 
+	
+	
+}
+
+	 public ArrayList<Robo> sobreviventes() {
+		  Iterator it = populacao.iterator();
+	      ArrayList auxiliar = new ArrayList();
+		  Robo aux;
+		  Robo melhor;
+	      int maior = -9999;
+		 
+	      for(int i = 0; i< 10 ; i++) {
+	    	  
+	    	
+	      while(it.hasNext()) {
+			  aux = (Robo) it.next();
+			  if(aux.getFitness() > maior && !auxiliar.contains(aux)) {
+				  melhor = aux;
+			  }
+		  }
+		  auxiliar.add(maior);
+		  
+		  
+	      }
+	
+	   return auxiliar;
+	 
+	 }
+	
+	
+	
+	
+	
+
 }
