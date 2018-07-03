@@ -29,7 +29,7 @@ public class Labirinto {
 	   
 	  
 	   
-	    String nome = "C://Users//Crispa//eclipse-workspace//AlgoritmoEvolutivo//src/teste.txt";
+	    String nome = "C://Users//Crispa//eclipse-workspace//AlgoritmoEvolutivo//src/teste1.txt";
 	 
 	    try {
 	      FileReader arq = new FileReader(nome);
@@ -53,20 +53,20 @@ public class Labirinto {
 		      
 		      if(contagem == 10) {
 		    	
-		    	  for(int i =0; i<10; i++) {
-		    		 
-		    		  for(int j =0; j<aux.length;j++) {
-		                     
-		  		        
-		    			  System.out.print(labirintoaux[i][j]);
-		  		    		  
-		  			    	
-		  			    
-		  			      }
-	    			  System.out.println(" ");
-
-		    	  }
-		    	  System.out.println(" ");
+//		    	  for(int i =0; i<10; i++) {
+//		    		 
+//		    		  for(int j =0; j<aux.length;j++) {
+//		                     
+//		  		        
+//		    			  System.out.print(labirintoaux[i][j]);
+//		  		    		  
+//		  			    	
+//		  			    
+//		  			      }
+//	    			  System.out.println(" ");
+//
+//		    	  }
+//		    	  System.out.println(" ");
 		    	  
 //		    	  char auxiliar [][] = labirintoaux;
 //		    	  labirintos.add(auxiliar);
@@ -101,34 +101,238 @@ public int getQtd() {
 public void percorrer(Robo robo) {
 	
 ArrayList trajeto = robo.getTrajeto();
+
 Iterator it = trajeto.iterator();
-int aux [];
+char aux ;
+int movimentoX = 1;
+int movimentoY =1;
+
+
+
 
 
 String posicao;
 while(it.hasNext()) {
-	aux = (int[]) it.next();
 	
-	if(!(aux[0] < 0 || aux[0]>9 || aux[1] < 0 || aux[1] > 14)) {
-		
-		if(labirintoaux [aux[0]][aux[1]] == '#') {
-			robo.setParede();
-		}
-		
-		if(labirintoaux [aux[0]][aux[1]] == 'F') {
-			robo.acertou(true);
-		}
-		
-	}
 	
-	else {
-		robo.calcularFitness(0);
-	}
+	
+	aux = (char) it.next();
+	
+	 switch(aux) {
+	 
+	 case 'C':
+		 movimentoY = movimentoY -1;
+		 if(!( movimentoY < 0 || movimentoY>9 || movimentoX < 0 || movimentoX > 14)) {
+				
+				
+				
+				if(labirintoaux [movimentoY][movimentoX] == '#') {
+					robo.setParede();
+				}
+				
+				
+			}
+			
+			else {
+				robo.setMorreu(true);
+				break;
+			}
+		 
+		 break;
+	
+	 case 'B':
+		 movimentoY = movimentoY +1;
+            
+		 if(!( movimentoY < 0 || movimentoY>9 || movimentoX < 0 || movimentoX > 14)) {
+				
+				
+				
+				if(labirintoaux [movimentoY][movimentoX] == '#') {
+					robo.setParede();
+				}
+				
+				
+				
+			}
+			
+			else {
+				robo.setMorreu(true);
+				break;
+
+			}
+
+
+		 break;
+	 
+	 case 'D':
+		 movimentoX = movimentoX +1;
+        
+		 if(!( movimentoY < 0 || movimentoY>9 || movimentoX < 0 || movimentoX > 14)) {
+				
+				
+				
+				if(labirintoaux [movimentoY][movimentoX] == '#') {
+					robo.setParede();
+				}
+				
+			
+				
+			}
+			
+			else {
+				robo.setMorreu(true);
+				break;
+
+			}
+		 break;
+	
+	 case 'E':
+		 movimentoX = movimentoX -1;
+
+		 if(!( movimentoY < 0 || movimentoY>9 || movimentoX < 0 || movimentoX > 14)) {
+				
+				
+				
+				if(labirintoaux [movimentoY][movimentoX] == '#') {
+					robo.setParede();
+				}
+				
+				
+			}
+			
+			else {
+				robo.setMorreu(true);
+				break;
+
+			}
+		 
+		 break;
+	 
+	 }
+	
+	
+	
+	
+	
+	
+//	if(!( movimentoY < 0 || movimentoY>9 || movimentoX < 0 || movimentoX > 14)) {
+//		
+//		
+//		
+//		if(labirintoaux [movimentoY][movimentoX] == '#') {
+//			robo.setParede();
+//		}
+//		
+//		if(labirintoaux [movimentoY][movimentoX] == 'F') {
+//			robo.acertou(true);
+//		}
+//		
+//	}
+//	
+//	else {
+//		robo.calcularFitness(0);
+//	}
 	
 	
 }
 
 
+if(!robo.isMorreu()) {
+	if(labirintoaux [movimentoY][movimentoX] == 'F') {
+		robo.acertou(true);
+	}
+}
+
+
+
+	
+	
+	
+
+
+
+	
+}
+
+
+public void printar(Robo robo) {
+	ArrayList trajeto = robo.getTrajeto();
+	Iterator it = trajeto.iterator();
+	char aux ;
+	int movimentoX =robo.getTrajeto_InicialX();
+	int movimentoY =robo.getTrajeto_InicialY();
+
+char[] [] desenho = labirintoaux.clone();
+
+String posicao;
+while(it.hasNext()) {
+	
+	
+	
+	aux = (char) it.next();
+	
+	 switch(aux) {
+	 
+	 case 'C':
+		 movimentoY = movimentoY -1;
+		 break;
+	
+	 case 'B':
+		 movimentoY = movimentoY +1;
+
+
+
+		 break;
+	 
+	 case 'D':
+		 movimentoX = movimentoX +1;
+
+		 break;
+	
+	 case 'E':
+		 movimentoX = movimentoX -1;
+
+		 break;
+	 
+	 }
+	
+	
+	 if(!( movimentoY < 0 || movimentoY>9 || movimentoX < 0 || movimentoX > 14)) {
+			
+         desenho[ movimentoY][movimentoX] = 'o';
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+}
+
+
+	 for(int i =0; i<10; i++) {
+		 
+		  for(int j =0; j<15;j++) {
+                 
+		        
+			  System.out.print(desenho[i][j]);
+		    		  
+			    	
+			    
+			      }
+		  System.out.println(" ");
+
+	  }
+	  System.out.println(" ");
+	
+	
+	
+	  carregarLabirinto();
+
+
 	
 }
 
@@ -136,7 +340,52 @@ while(it.hasNext()) {
 
 
 
+public void printarFinal(Robo robo) {
+	char aux ;
+	int movimentoX =robo.getTrajeto_finalX();
+	int movimentoY =robo.getTrajeto_finalY();
 
+char[] [] desenho = labirintoaux.clone();
+
+String posicao;
+
+	
+	 
+	
+	
+	 if(!( movimentoY < 0 || movimentoY>9 || movimentoX < 0 || movimentoX > 14)) {
+			
+         desenho[ movimentoY][movimentoX] = 'o';
+			
+	
+	
+	
+	
+}
+
+
+	 for(int i =0; i<10; i++) {
+		 
+		  for(int j =0; j<15;j++) {
+                 
+		        
+			  System.out.print(desenho[i][j]);
+		    		  
+			    	
+			    
+			      }
+		  System.out.println(" ");
+
+	  }
+	  System.out.println(" ");
+	
+	
+	
+
+
+
+	
+}
 
 
 

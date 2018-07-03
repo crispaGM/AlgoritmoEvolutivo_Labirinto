@@ -4,18 +4,32 @@ import java.util.Random;
 
 public class Robo {
 
-private int fitness;
+private int fitness ;
 private char genes [];
-private int trajeto_final[];
+private int trajeto_finalY;
+private int trajeto_finalX;
+private int trajeto_InicialY;
+private int trajeto_InicialX;
+private int posicao_inicial[];
+
 private ArrayList trajeto;
-private final int MELHOR_trajeto_final= 60;
-private final int CHEGAR_NO_FINAL= 100;
-private final int PAREDE= -50;
+public int getTrajeto_InicialY() {
+	return trajeto_InicialY;
+}
+
+public int getTrajeto_InicialX() {
+	return trajeto_InicialX;
+}
+
+//private final int MELHOR_trajeto_final= 60;
+private final int CHEGAR_NO_FINAL= 1000;
+private final int PAREDE= -100;
 private boolean acertou = false;
 private boolean gastoumenos = false;
 private int parede = 0;
 private int gasto = 0;
 private char comandos [] = {'C','B','E','D'};
+private boolean morreu;
 
 private int [] tabela_pontos = {25,15,10,5,1};
 
@@ -36,49 +50,66 @@ private int [] tabela_pontos = {25,15,10,5,1};
 
 
 
-	public Robo(char genes[],int[] pontoInicial) {
+	public Robo(char genes[],int pontoInicialX, int pontoInicialY) {
 		this.genes = genes;
 		trajeto =  new ArrayList();
-		this.trajeto_final = pontoInicial;
-		
+		this.trajeto_finalX = pontoInicialX;
+		this.trajeto_finalY = pontoInicialY;
+		this.trajeto_InicialX = pontoInicialX;
+		this.trajeto_InicialY = pontoInicialY;
+        this.morreu = false;
+		this.fitness = 0;
+		gasto = 0;
 	}
 
 
+public boolean isMorreu() {
+		return morreu;
+	}
+
+	public void setMorreu(boolean morreu) {
+		this.morreu = morreu;
+	}
+
+public int [] inicial() {
+	return this.posicao_inicial;
+}
 
 
 
-public int[] percorrer() {
+
+public void percorrer() {
 	
 	for(int i = 0; i< genes.length;i++) {
 		char aux = genes[i];
 		 switch(aux) {
 		 
 		 case 'C':
-			 trajeto_final[0]=trajeto_final[0]-1;
-			 trajeto.add(trajeto_final);
+			 trajeto_finalY=trajeto_finalY-1;
+			 trajeto.add('C');
 			 break;
 		
 		 case 'B':
-			 trajeto_final[0]=trajeto_final[0]+1;
-			 trajeto.add(trajeto_final);
+			 trajeto_finalY=trajeto_finalY+1;
+			 trajeto.add('B');
+
 
 			 break;
 		 
 		 case 'D':
-			 trajeto_final[1]=trajeto_final[1]+1;
-			 trajeto.add(trajeto_final);
+			 trajeto_finalX=trajeto_finalX+1;
+			 trajeto.add('D');
 
 			 break;
 		
 		 case 'E':
-			 trajeto_final[1]=trajeto_final[1]-1;
-			 trajeto.add(trajeto_final);
+			 trajeto_finalX=trajeto_finalX-1;
+			 trajeto.add('E');
 
 			 break;
 		 
 		 }
 	}
-	return trajeto_final;
 }
 
 
@@ -120,15 +151,30 @@ public void calcularFitness(int fitness) {
 	
 }
 
-public int avaliarTrajeto(int [] correto) {
+public int avaliarTrajeto(int corretoX, int corretoY) {
 	if(this.acertou == true) {
 		return CHEGAR_NO_FINAL;
 	}
-	int caminhoY = trajeto_final[0]- correto [0];
-	int caminhoX = trajeto_final[1] - correto[1];
-	int dist = caminhoY + caminhoX;
+	int caminhoY ;
+	int caminhoX ;
 	
-	return dist;
+	if(trajeto_finalY >= corretoY) {
+		 caminhoY = trajeto_finalY- corretoY;
+	}
+	else {
+		 caminhoY = trajeto_finalY- corretoY * -1;
+
+	}
+	
+	if(trajeto_finalX >= corretoX) {
+		 caminhoX = trajeto_finalX- corretoX;
+	}
+	else {
+		 caminhoX = trajeto_finalX- corretoX * -1;
+
+	}
+	
+	return caminhoY + caminhoX* -1;
 }
 
 public void acertou(boolean acertou) {
@@ -145,47 +191,96 @@ public void alterarGene(int taxa_mt) {
 	Random gerador = new Random();
 	
 	for(int i = 0; i<taxa_mt; i++) {
-		int posicao = gerador.nextInt(getEnergia()-1);
-		int comando =gerador.nextInt(comandos.length-1);
-		genes[posicao] = comandos[comando];  
+		int posicao = gerador.nextInt(getEnergia());
+		int comando =gerador.nextInt(4);
+		this.genes[posicao] = comandos[comando];  
 	}
 	
 	
 }
 
+/**
+ * @param taxa_mt
+ * @return
+ */
 public void diminuirGene(int taxa_mt) {
 	Random gerador = new Random();
-	int posicao = gerador.nextInt(getEnergia()-1);
+	//int posicao = gerador.nextInt(getEnergia()-1)+1;
+	int posicao = gerador.nextInt(getEnergia());
+	
+
+	
 	
 	char aux[] = new char[genes.length- taxa_mt];
 	
-	genes[posicao] = 's';
-	for(int i =0; i<genes.length-taxa_mt;i++) {
-	  
-		if(genes[i]!= 's') {
-	    	
-			aux [i] = genes[i];	
+	int j =0;
+	for(int k = 0; k<taxa_mt; k++) {
+		
+		
+		for(int i =0; i<genes.length;i++) {
+			  
+			if(posicao == i && i!= genes.length-1 ) {
+				i++;
+		  
+		  }
+			
+			
 
-	    }
+						if(j< genes.length - taxa_mt) {
+							aux [j] = genes[i];	
+
+							
+						}
+						j = j +1 ;
+					
+						
+
+                        
+				    
+				
+			
+		   
+			
+		}
+		
+		j = 0;
+		
+		
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	genes = aux;
 	
 }
 
+public void setGenes(char[] genes) {
+	this.genes = genes.clone();
+}
+
 public void aumentarGene(int taxa_mt) {
 	Random gerador = new Random();
-	int posicao = gerador.nextInt(getEnergia()-1);
-	int comando =gerador.nextInt(comandos.length-1);
+	int posicao = 0;
+	int comando = 0;
 	char aux[] = new char[genes.length + taxa_mt];
 	
 	//genes[posicao] = 's';
 	
 	
 	for(int j = 0; j<taxa_mt ; j++) {
-		
-	
+		posicao = gerador.nextInt(getEnergia()-1);
+		comando =gerador.nextInt(comandos.length-1);
+
+	   
 	for(int i =0; i<posicao;i++) {
 	      	
 		aux [i] = genes[i];	
@@ -194,7 +289,7 @@ public void aumentarGene(int taxa_mt) {
 		
 	}
 	
-	for(int i =posicao; i<genes.length + taxa_mt;i++) {
+	for(int i =posicao; i<genes.length;i++) {
       	
 		aux [i+1] = genes[i];	
 
@@ -206,6 +301,16 @@ public void aumentarGene(int taxa_mt) {
 	}
 	
 	genes = aux;
+}
+
+public int getTrajeto_finalX() {
+	// TODO Auto-generated method stub
+	return trajeto_finalX;
+}
+
+public int getTrajeto_finalY() {
+	return trajeto_finalY;
+	
 }
 
 

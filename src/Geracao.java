@@ -5,13 +5,19 @@ public class Geracao {
     
 	private ArrayList populacao = new ArrayList();
 	private ArrayList melhores = new ArrayList();
-	private int pontoFinal [] = new int[2];
-	private int pontoInicial [] = new int[2];
+//	private int pontoFinal [] = new int[2];
+//	private int pontoInicial [] = new int[2];
+	int pontoFinalX = 1;
+	int pontoFinalY = 4;
+	int pontoInicialX = 1;
+	int pontoInicialY = 1;
 	Labirinto labirinto;
 
 
 	public Geracao(Labirinto labirinto) {
-		pontos(labirinto.getLabirintoaux());
+		
+	    
+		//pontos(labirinto.getLabirintoaux());
 	    this.labirinto =labirinto;
 	}
 	
@@ -26,35 +32,35 @@ public class Geracao {
 	}
 
 
-	public int[] getPontoFinal() {
-		return pontoFinal;
-	}
-
-	public int[] getPontoInicial() {
-		return pontoInicial;
-	}
-
-	public void pontos(char[][]labirinto) {
-		for(int i =0; i<10; i ++) {
-			
-			
-			for(int j = 0; j<15; j++) {
-				
-				char aux = labirinto[i][j];
-				if(aux == 'F') {
-					this.pontoFinal[0]= i+1;
-					this.pontoFinal[1]= j+1;
-				}
-				else if(aux == 'I') {
-					this.pontoInicial[0]= i+1;
-					this.pontoInicial[1]= j+1;
-				}
-				
-			}
-			
-			
-		}
-	}
+//	public int[] getPontoFinal() {
+//		return pontoFinal;
+//	}
+//
+//	public int[] getPontoInicial() {
+//		return pontoInicial;
+//	}
+//
+//	public void pontos(char[][]labirinto) {
+//		for(int i =0; i<10; i ++) {
+//			
+//			
+//			for(int j = 0; j<15; j++) {
+//				
+//				char aux = labirinto[i][j];
+//				if(aux == 'F') {
+//					this.pontoFinal[0]= i;
+//					this.pontoFinal[1]= j;
+//				}
+//				else if(aux == 'I') {
+//					this.pontoInicial[0]= i;
+//					this.pontoInicial[1]= j;
+//				}
+//				
+//			}
+//			
+//			
+//		}
+//	}
 	
 	
 	
@@ -77,7 +83,6 @@ public class Geracao {
 	public void percorrer() {
 		Iterator it = populacao.iterator();
         Robo aux;
-
 		String posicao;
 		while(it.hasNext()) {
 		aux = (Robo) it.next();	
@@ -91,19 +96,18 @@ public class Geracao {
 	
 	public void menorEnergia() {
 		ArrayList auxiliar= new ArrayList();
-		
-		Iterator it = populacao.iterator();
         Robo aux;
         Robo escolhido = null;
         int maisenergia = 0;
         int contador = 0;
 		for(int i =0; i< populacao.size();i++) {
-			
+			Iterator it = populacao.iterator();
+
 			while(it.hasNext()) {
 	    		int menor = 99999;
 	        	aux = (Robo) it.next();	
 	    		
-	    		if(aux.getEnergia() < menor) {
+	    		if(aux.getEnergia() < menor && !auxiliar.contains(aux)) {
 	    			escolhido = aux;
 	    			menor = aux.getEnergia();
 	    			
@@ -112,27 +116,39 @@ public class Geracao {
 			
 		}
 			
-			if(i == 0) {
-				escolhido.setMenorGasto(true,0);
-			}
-			else if(i> 0 && i<10) {
-				escolhido.setMenorGasto(true,1);
-			}
 			
-			else if(i> 10 && i<30) {
-				escolhido.setMenorGasto(true,2);
-			}
-			
-			else if(i> 30 && i<60) {
-				escolhido.setMenorGasto(true,3);
-			}
-			
-			else if(i> 60 && i<99) {
-				escolhido.setMenorGasto(true,4);
-			}
 			
 		}
         
+		auxiliar.add(escolhido);
+		
+		
+		for(int i = 0; i< auxiliar.size();i++) {
+			 if(i> 0 && i<10) {
+				 
+					((Robo) auxiliar.get(i)).setMenorGasto(false,1);
+
+			 }
+			 
+			 
+			 else if(i> 10 && i<30) {
+				 ((Robo) auxiliar.get(i)).setMenorGasto(false,2);
+				}
+				
+				else if(i> 30 && i<60) {
+					((Robo) auxiliar.get(i)).setMenorGasto(false,3);
+				}
+				
+				else if(i> 60 && i<99) {
+					((Robo) auxiliar.get(i)).setMenorGasto(false,4);
+				}
+			 
+			 
+		}
+		
+		
+		
+		
 		
 		
 	}
@@ -142,14 +158,19 @@ public class Geracao {
 		Iterator it = populacao.iterator();
         Robo aux;
        
-        
+       
         
         
         while(it.hasNext()) {
     		aux = (Robo) it.next();	
     		
-    		int fitness = aux.avaliarTrajeto(pontoFinal)+ aux.punicao() + aux.getGasto();
-		    aux.calcularFitness(fitness);
+    		if(!aux.isMorreu()) {
+    			int fitness = aux.avaliarTrajeto(pontoFinalX,pontoFinalY)+ aux.punicao();// + aux.getGasto();
+    		    aux.calcularFitness(fitness);
+    			
+    		}
+    		
+    		
 		
 	}
 	
@@ -159,30 +180,83 @@ public class Geracao {
 	
 }
 
-	 public ArrayList<Robo> sobreviventes() {
-		  Iterator it = populacao.iterator();
-	      ArrayList auxiliar = new ArrayList();
+	 public int getPontoInicialX() {
+		return pontoInicialX;
+	}
+
+
+	public int getPontoInicialY() {
+		return pontoInicialY;
+	}
+
+
+	public ArrayList<Robo> sobreviventes() {
+		 
+		Iterator it = populacao.iterator();
+	     ArrayList auxiliar = new ArrayList();
 		  Robo aux;
-		  Robo melhor;
+		  char gene [] = {'a','a','a','a'};
+		  int cont = 0;
+
+		  Robo melhor = new Robo(gene,pontoInicialX, pontoInicialY);
 	      int maior = -9999;
 		 
 	      for(int i = 0; i< 10 ; i++) {
-	    	  
+	    	  maior = -9999;
 	    	
 	      while(it.hasNext()) {
 			  aux = (Robo) it.next();
-			  if(aux.getFitness() > maior && !auxiliar.contains(aux)) {
+			  if(aux.getFitness() > maior && !auxiliar.contains(aux) && aux.isMorreu() == false ) {
+				  
 				  melhor = aux;
+			      maior = aux.getFitness(); 
+			  
 			  }
-		  }
-		  auxiliar.add(maior);
 		  
+	      
+	      }
+	     
+		  if(i ==0) {
+			  System.out.println(" O melhor aqui pow : ");
+
+			  System.out.println(melhor.getFitness());
+		  }
+	      
+	      Robo novo = new Robo(melhor.getGenes(),pontoInicialX, pontoInicialY);
+	      auxiliar.add(novo);
+
+	    
+	      
+
 		  
 	      }
-	
-	   return auxiliar;
+	      
+	      if(auxiliar.size()< 10) {
+	    	  for(int i = auxiliar.size(); i<10; i++) {
+    			  Robo aux2  = (Robo) populacao.get(i);
+                  
+	    		  if(auxiliar.contains(aux2)) {
+		    		  auxiliar.add(aux2);
+	    		  }
+	    		  
+	    	  }
+	      }
+	      
+	      
+				  System.out.println(" Sobreviente melhor  :  " );
+				  System.out.println(((Robo) auxiliar.get(0)).getGenes());
+
+	    		  return auxiliar;
 	 
 	 }
+
+
+	public void setLabirinto(Labirinto labirinto) {
+		this.labirinto = labirinto;
+	}
+	 
+	 
+	 
 	
 	
 	
