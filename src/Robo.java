@@ -23,7 +23,7 @@ public int getTrajeto_InicialX() {
 
 //private final int MELHOR_trajeto_final= 60;
 private final int CHEGAR_NO_FINAL= 1000;
-private final int PAREDE= -100;
+private final int PAREDE= -200;
 private boolean acertou = false;
 private boolean gastoumenos = false;
 private int parede = 0;

@@ -105,7 +105,7 @@ ArrayList trajeto = robo.getTrajeto();
 Iterator it = trajeto.iterator();
 char aux ;
 int movimentoX = 1;
-int movimentoY =1;
+int movimentoY =4;
 
 
 

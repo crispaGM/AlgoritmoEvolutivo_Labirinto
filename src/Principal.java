@@ -22,7 +22,7 @@ public class Principal {
 			labirinto.printar(((Robo) nova.getPopulacao().get(0)));
 			 File saida = new File("Dados Saida"+"saida.txt");
 		     BufferedWriter bwriter = new BufferedWriter(new FileWriter(saida));
-			for(int i = 0; i< 300; i++) {
+			for(int i = 0; i< 500; i++) {
 
 					
 				nova.setLabirinto(labirinto);
