@@ -98,8 +98,8 @@ public int getQtd() {
 
 
 
-public void percorrer(Robo robo) {
-	
+public boolean percorrer(Robo robo) {
+boolean solucao = false;	
 ArrayList trajeto = robo.getTrajeto();
 
 Iterator it = trajeto.iterator();
@@ -240,13 +240,14 @@ while(it.hasNext()) {
 if(!robo.isMorreu()) {
 	if(labirintoaux [movimentoY][movimentoX] == 'F') {
 		robo.acertou(true);
+		return true;
 	}
 }
 
 
 
 	
-	
+	return false;
 	
 
 

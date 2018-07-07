@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -5,49 +9,67 @@ import java.util.Random;
 public class Principal {
 	static Labirinto labirinto = new Labirinto();
 	static Geracao nova;
+	static boolean solucao = false;
 	private static char passos[] = { 'C', 'B', 'E', 'D' };
+	
+	public static void main(String[] args) throws IOException {
+		do {
+			
+			labirinto.carregarLabirinto();
+			nova = new Geracao(labirinto);
+			nova.setPopulacao(populacaoInicial());
+			nova.percorrer();
+			labirinto.printar(((Robo) nova.getPopulacao().get(0)));
+			 File saida = new File("Dados Saida"+"saida.txt");
+		     BufferedWriter bwriter = new BufferedWriter(new FileWriter(saida));
+			for(int i = 0; i< 300; i++) {
 
-	public static void main(String[] args) {
-		labirinto.carregarLabirinto();
-		nova = new Geracao(labirinto);
-		nova.setPopulacao(populacaoInicial());
-		nova.percorrer();
-		labirinto.printar(((Robo) nova.getPopulacao().get(0)));
-		for(int i = 0; i< 200; i++) {
+					
+				nova.setLabirinto(labirinto);
+	           double fitnessMedio = fitnessMedio();
+		         bwriter.write("Geração : " + i +"\t" ); 
+	           
+	           bwriter.write("Fitness : " + fitnessMedio +"\t" ); 
+	           bwriter.write("Fitness Melhor : " +((Robo) nova.getPopulacao().get(0)).getFitness() +"\t" ); 
+
+	           bwriter.write("\n" ); 
+
+				novaGeracao();
+				nova.percorrer();
+				labirinto.printar(((Robo) nova.getPopulacao().get(0)));	
 
 				
-		//	nova.setLabirinto(labirinto);
-//
-			novaGeracao();
-			nova.percorrer();
-			labirinto.printar(((Robo) nova.getPopulacao().get(0)));	
+				
+	           
+			 	//System.out.println(((Robo) nova.getPopulacao().get(0)).getTrajeto_final()[0]);
+				//System.out.println(((Robo) nova.getPopulacao().get(0)).getTrajeto_final()[1]);
+				ArrayList sim = ((((Robo) nova.getPopulacao().get(0)).getTrajeto()));
+				//System.out.println(sim.size());
 
+//				for(int p = 0; p<sim.size();p++ ) {
+//					char k = (char) sim.get(p);
+//					System.out.println(k);
+//				}
+				//System.out.println(((Robo) nova.getPopulacao().get(0)).getGenes());
+				//System.out.println(((Robo) nova.getPopulacao().get(0)).getEnergia());
+
+
+
+				//System.out.println(((Robo) nova.getPopulacao().get(0)).inicial()[0]);
+				
+
+
+
+
+
+				//System.out.println(((Robo) nova.getPopulacao().get(0)).getFitness());
+			}
+			bwriter.flush();
+	        bwriter.close();
 			
-			
-           
-		 	//System.out.println(((Robo) nova.getPopulacao().get(0)).getTrajeto_final()[0]);
-			//System.out.println(((Robo) nova.getPopulacao().get(0)).getTrajeto_final()[1]);
-			ArrayList sim = ((((Robo) nova.getPopulacao().get(0)).getTrajeto()));
-			//System.out.println(sim.size());
-
-//			for(int p = 0; p<sim.size();p++ ) {
-//				char k = (char) sim.get(p);
-//				System.out.println(k);
-//			}
-			//System.out.println(((Robo) nova.getPopulacao().get(0)).getGenes());
-			//System.out.println(((Robo) nova.getPopulacao().get(0)).getEnergia());
-
-
-
-			//System.out.println(((Robo) nova.getPopulacao().get(0)).inicial()[0]);
-			
-
-
-
-
-
-			//System.out.println(((Robo) nova.getPopulacao().get(0)).getFitness());
-		}
+		}while(nova.isSolucao()== false);
+		
+		
 		
 	}
 
@@ -60,7 +82,7 @@ public class Principal {
 //        inicial.add(certo);
 		for (int i = 0; i < 100; i++) {
 
-			cromossomo = gerador.nextInt(10) + 1;
+			cromossomo = gerador.nextInt(30) + 10;
 			char genes[] = new char[cromossomo];
 			for (int j = 0; j < cromossomo; j++) {
 				int aux = gerador.nextInt(4);
@@ -124,7 +146,10 @@ public class Principal {
 
 	}
 
-	public static void novaGeracao() {
+	public static void novaGeracao() throws IOException {
+		
+        
+		
 		ArrayList sobreviventes = nova.sobreviventes();
 		
 		ArrayList filhos = new ArrayList();
@@ -173,6 +198,26 @@ public class Principal {
 		nova.setPopulacao(sobreviventes);
 		
 	}
+	
+	
+	public static double fitnessMedio() {
+		Iterator it = nova.getPopulacao().iterator();
+		Robo aux;
+		double soma = 0;
+		double media = 0;
+		while(it.hasNext()) {
+			aux = (Robo)it.next();
+		    soma = soma + aux.getFitness(); 
+		
+		
+		}
+		
+		media = soma/100;
+		
+		return media;
+		
+	}
+	
 	
 	
 }

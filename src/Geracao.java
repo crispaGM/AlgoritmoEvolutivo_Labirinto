@@ -7,11 +7,12 @@ public class Geracao {
 	private ArrayList melhores = new ArrayList();
 //	private int pontoFinal [] = new int[2];
 //	private int pontoInicial [] = new int[2];
-	int pontoFinalX = 1;
-	int pontoFinalY = 4;
+	int pontoFinalX = 8;
+	int pontoFinalY = 13;
 	int pontoInicialX = 1;
 	int pontoInicialY = 1;
 	Labirinto labirinto;
+	boolean solucao = false;
 
 
 	public Geracao(Labirinto labirinto) {
@@ -87,13 +88,27 @@ public class Geracao {
 		while(it.hasNext()) {
 		aux = (Robo) it.next();	
 		aux.percorrer();
-		labirinto.percorrer(aux);	
+		if(solucao == false) {
+			solucao = labirinto.percorrer(aux);	
+
+		}
+		 
+		else {
+			labirinto.percorrer(aux);	
+
+		}
+		
 		}
 		menorEnergia();
 		calcularFitness();
 		
 	}
 	
+	public boolean isSolucao() {
+		return solucao;
+	}
+
+
 	public void menorEnergia() {
 		ArrayList auxiliar= new ArrayList();
         Robo aux;
@@ -207,12 +222,33 @@ public class Geracao {
 	      while(it.hasNext()) {
 			  aux = (Robo) it.next();
 			  if(aux.getFitness() > maior && !auxiliar.contains(aux) && aux.isMorreu() == false ) {
-				  
+				 
+			    
 				  melhor = aux;
 			      maior = aux.getFitness(); 
 			  
 			  }
 		  
+			  // criterio de desempate é o cromossomo com menor passos
+			  else if(aux.getFitness() == melhor.getFitness()) { 
+				  
+				  if(aux.getAcertou() && melhor.getAcertou()) {
+				 if(aux.getEnergia()< melhor.getEnergia()) {
+					  melhor = aux;
+				      maior = aux.getFitness();
+				 }
+				  
+			  }
+			  }
+			  
+//			  else if(aux.getFitness() == maior) {
+//			    	 if(aux.getEnergia()< melhor.getEnergia()) {
+//			    		 melhor = aux;
+//					      maior = aux.getFitness();
+//			    	 }
+//			     }
+			  
+			  
 	      
 	      }
 	     
@@ -232,6 +268,8 @@ public class Geracao {
 	      }
 	      
 	      if(auxiliar.size()< 10) {
+	    	  
+	    	  System.out.println("Deuuu Ruimmmm");
 	    	  for(int i = auxiliar.size(); i<10; i++) {
     			  Robo aux2  = (Robo) populacao.get(i);
                   
