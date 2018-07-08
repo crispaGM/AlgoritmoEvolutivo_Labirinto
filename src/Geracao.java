@@ -7,10 +7,10 @@ public class Geracao {
 	private ArrayList melhores = new ArrayList();
 //	private int pontoFinal [] = new int[2];
 //	private int pontoInicial [] = new int[2];
-	int pontoFinalX = 1;
-	int pontoFinalY = 6;
+	int pontoFinalX = 13;
+	int pontoFinalY = 1;
 	int pontoInicialX = 1;
-	int pontoInicialY = 4;
+	int pontoInicialY = 1;
 	Labirinto labirinto;
 	boolean solucao = false;
 

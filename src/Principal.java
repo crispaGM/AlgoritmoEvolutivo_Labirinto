@@ -154,7 +154,6 @@ public class Principal {
 		
 		ArrayList filhos = new ArrayList();
 		Robo pai = (Robo) sobreviventes.get(0);
-		System.out.println(" ELLEE aquiiiii: ");
 
 		System.out.println(pai.getGenes());
 	    
@@ -163,7 +162,7 @@ public class Principal {
 		  for (int i=0; i < pai.getGenes().length; i++) gene[i]=pai.getGenes()[i];
 
 		
-		for(int i =0 ; i< 30; i++) {
+		for(int i =0 ; i< 9; i++) {
 
 			Robo filho = new Robo(gene,nova.getPontoInicialX(),nova.getPontoInicialY());
 			
@@ -176,13 +175,13 @@ public class Principal {
 	
 
 
-		for(int j =1; j<7; j++) {
+		for(int j =1; j<10; j++) {
 			Robo pai2 = (Robo)sobreviventes.get(j);
 			char []	gene2 = new char[pai2.getGenes().length];
 			  for (int i=0; i < pai2.getGenes().length; i++) gene2[i]=pai2.getGenes()[i];
 
 			
-			for(int i =0 ; i< 10; i++) {
+			for(int i =0 ; i< 9; i++) {
 				
 				Robo filho = new Robo(gene2,nova.getPontoInicialX(),nova.getPontoInicialY());
 			
